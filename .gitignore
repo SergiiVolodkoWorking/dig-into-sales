@@ -1,1 +1,4 @@
 .vscode
+mining/__pycache__
+
+geckodriver.log
