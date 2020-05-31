@@ -13,6 +13,10 @@ class LinkedInScrapper:
         elements = self.browser.find_elements(By.XPATH, path)
         return "" if len(elements) == 0 else elements[0].text
 
+    def parse_image_src_from_xpath(self, path):
+        elements = self.browser.find_elements(By.XPATH, path)
+        return "" if len(elements) == 0 else elements[0].get_attribute("src")
+
     def clean_description(self, text):
         text = text.replace('\n', ' ')
         text = text.replace('\t', '').replace('   ', '').replace('  ', ' ')
@@ -34,5 +38,12 @@ class LinkedInScrapper:
         description = self.clean_description(description_text)
 
         industry = self.parse_property_from_xpath("//dt[text()='Industry']/following::dd")
+        website = self.parse_property_from_xpath("//dt[text()='Website']/following::dd")
+        
+        headquarter = self.parse_property_from_xpath("//div[@class='org-top-card-summary-info-list t-14 t-black--light']/div[contains(@class,'inline-block')]/div")
+        if "followers" in headquarter:
+            headquarter = ""
 
-        return description, size, specialties, established, industry
+        logo_url = self.parse_image_src_from_xpath("//img[@class='org-top-card-primary-content__logo Elevation-0dp lazy-image ember-view']")
+
+        return description, size, specialties, established, industry, website, headquarter, logo_url
