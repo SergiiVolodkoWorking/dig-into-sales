@@ -1,16 +1,32 @@
 import pandas as pd
 from BrowserFactory import BrowserFactory
 from LinkedInScrapper import LinkedInScrapper
+import os.path
+
+source_data_file = "./data/airtable-unique-companies.csv"
+target_data_file = "./data/airtable-companies-with-linkedin-data.csv"
+unreconized_companies_file = "./data/unrecognized-airtable-companies.csv"
+bookmark_file = "./data/mining_airtable_bookmark.txt"
+
+bulk_size = 10
+
+# source_data_file = "./data/companies-from-deals.csv"
+# target_data_file = "./data/companies-with-linkedin-data.csv"
+# unreconized_companies_file = "./data/unrecognized-companies.csv"
 
 def load_all_companies():
-    return pd.read_csv("./data/companies-from-deals.csv", index_col=0)
+    return pd.read_csv(source_data_file, index_col=0)
 
 def print_company(company, i):
     print('======================================')
     print('->', i)
-    print(company["Industry"])
-    print(company["Deal Name"])
     print(company["Associated Company"])
+    print(company["Industry"])
+    print(company["Employees"])
+    print(company["HQ"])
+    print(company["Website"]) 
+    # print(company["Deal Name"])
+    # print(company["Associated Company"])
 
 def search_on_linkedin(browser, company):
     company_name = company["Associated Company"]
@@ -18,21 +34,24 @@ def search_on_linkedin(browser, company):
     browser.get(search_url)
 
 def save_to_unreconized(company):
-    df = pd.read_csv("./data/unrecognized-companies.csv", index_col=0)
+    if not os.path.isfile(unreconized_companies_file):
+        df = pd.DataFrame(company, columns=company.axes[0])
+        df.to_csv(unreconized_companies_file, index=True)
+    df = pd.read_csv(unreconized_companies_file, index_col=0)
     df = df.append(company)
-    df.to_csv('./data/unrecognized-companies.csv', index=True)
+    df.to_csv(unreconized_companies_file, index=True)
 
 def save_bookmark(i):
-    with open("./data/mining_bookmark.txt", "w") as text_file:
+    with open(bookmark_file, "w") as text_file:
         text_file.write("{}".format(i+1))
 
 def load_bookmark():
-    with open("./data/mining_bookmark.txt", "r") as file:
+    with open(bookmark_file, "r") as file:
         return int(file.read())
 
 def scrap_company(scrapper, company_id, company):
     url = "https://www.linkedin.com/company/{}/about/".format(company_id)
-    description, size, specialties, established, industry = scrapper.get_company_data(url)
+    description, size, specialties, established, industry, website, headquarter, logo_url = scrapper.get_company_data(url)
     company["LinkedIn description"] = description
     company["LinkedIn size"] = size
     company["LinkedIn specialties"] = specialties
@@ -40,12 +59,18 @@ def scrap_company(scrapper, company_id, company):
     company["LinkedIn id"] = company_id
     company["LinkedIn url"] = url
     company["LinkedIn Industry"] = industry
+    company["LinkedIn website"] = website
+    company["LinkedIn temporary logo"] = logo_url
+    company["LinkedIn headquarter"] = headquarter
     return company
 
 def save_found_company(company):
-    df = pd.read_csv("./data/companies-with-linkedin-data.csv", index_col=0)
+    if not os.path.isfile(target_data_file):
+        df = pd.DataFrame(company, columns=company.axes[0])
+        df.to_csv(target_data_file, index=True)
+    df = pd.read_csv(target_data_file, index_col=0)
     df = df.append(company)
-    df.to_csv('./data/companies-with-linkedin-data.csv', index=True)
+    df.to_csv(target_data_file, index=True)
 
 if __name__ == "__main__":
     companies = load_all_companies()
@@ -53,7 +78,6 @@ if __name__ == "__main__":
     browser = BrowserFactory.create()
     scrapper = LinkedInScrapper(browser)
 
-    bulk_size = 25
     bookmark = load_bookmark()
     print('Starting from:', bookmark)
     try:
