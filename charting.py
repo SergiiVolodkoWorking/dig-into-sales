@@ -58,7 +58,7 @@ class ChartBuilder(object):
         return self
         
     def with_tuned_bar_text(self, max_number_of_deals, x_margin=0, y_margin=0, disply_long_closed_deals_text_after=23):
-        plt.subplots_adjust(left=0.155, right=0.98, top=0.92, bottom=0.05, wspace=0, hspace=0)
+        plt.subplots_adjust(left=0.125, right=0.98, top=0.92, bottom=0.05, wspace=0, hspace=0)
         ticks = list(i for i in range(25, max_number_of_deals + 25, 25))
         self.graph.set_xticks(ticks)
         height = 1
@@ -73,7 +73,7 @@ class ChartBuilder(object):
             total_deals_text = ChartBuilder.make_row_summary(total, efficency)
             closed_deals_text = ChartBuilder.make_closed_deals(closed_deals, disply_long_closed_deals_text_after)
             self.graph.text(total + 1, y + y_margin, total_deals_text, fontsize=self.bar_note_font_size, color=self.color_dark_grey)
-            self.graph.text(closed_deals + 1, y + y_margin, str(lost_deals), fontsize=self.bar_note_font_size, color=self.color_dark_grey)
+            self.graph.text(closed_deals + 0.05, y + y_margin, str(lost_deals), fontsize=self.bar_note_font_size, color=self.color_dark_grey)
             self.graph.text(x_margin, y + y_margin, closed_deals_text, fontsize=self.bar_note_font_size, color=self.color_dark_grey)
         return self
 
@@ -107,7 +107,7 @@ def plot_industries(industry_comparison, number_of_companies_with_industries = 6
         .ordered_by_efficency()\
         .with_title(title)\
         .make_barchart_of(column_name)\
-        .with_tuned_bar_text(250, 1)\
+        .with_tuned_bar_text(250, x_margin=0.5)\
         .build()
         #.save("Deals per Industry.png")
     
@@ -143,11 +143,11 @@ def plot_sources(size_comparison, number_of_deals_with_sources=400):
 if __name__ == "__main__":
     data_folder = os.path.join(os.path.dirname(__file__), 'data')
     
-    # industry_comparison = pd.read_csv(data_folder+'/tmp-industry-comparison.csv', index_col=0)
-    # plot_industries(industry_comparison)
+    industry_comparison = pd.read_csv(data_folder+'/tmp-industry-findep-comparison.csv', index_col=0)
+    plot_industries(industry_comparison)
 
     # size_comparison = pd.read_csv(data_folder+'/tmp-linkedin-size-comparison.csv', index_col=0)
     # plot_sizes(size_comparison)
 
-    source_comparison = pd.read_csv(data_folder+'/tmp-source-comparison.csv', index_col=0)
-    plot_sources(source_comparison)
+    # source_comparison = pd.read_csv(data_folder+'/tmp-source-comparison.csv', index_col=0)
+    # plot_sources(source_comparison)
