@@ -26,6 +26,9 @@ class LinkedInScrapper:
 
     def get_company_data(self, linked_company_url):
         self.browser.get(linked_company_url)
+        url = self.browser.current_url
+        linkedin_id = 'unavailable' if url.endswith('unavailable/') else url.split('/')[-3]
+
         established = self.parse_property_from_xpath("//dt[text()='Founded']/following::dd")
 
         specialties_text = self.parse_property_from_xpath("//dd[@dir='ltr']")
@@ -45,5 +48,19 @@ class LinkedInScrapper:
             headquarter = ""
 
         logo_url = self.parse_image_src_from_xpath("//img[@class='org-top-card-primary-content__logo Elevation-0dp lazy-image ember-view']")
+        company_name = self.parse_property_from_xpath("//h1/span[@dir='ltr']")
 
-        return description, size, specialties, established, industry, website, headquarter, logo_url
+        return ScrappedCompany(linkedin_id,company_name, description, size, specialties, established, industry, website, headquarter, logo_url)
+
+class ScrappedCompany:
+    def __init__(self, linkedin_id, company_name, description, size, specialties, established, industry, website, headquarter, logo_url):
+        self.linkedin_id = linkedin_id
+        self.linkedin_name = company_name
+        self.description = description
+        self.size = size
+        self.specialties = specialties
+        self.established = established
+        self.industry = industry
+        self.website = website
+        self.headquarter = headquarter
+        self.logo_url = logo_url

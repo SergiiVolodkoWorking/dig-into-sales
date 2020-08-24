@@ -31,11 +31,10 @@ def save_company(company):
 
 def scrap_company(scrapper, company):
     url = company["LinkedIn url"]
-    description, size, specialties, established, industry, website, headquarter, logo_url  = scrapper.get_company_data(url)
-    company["LinkedIn website"] = website
-    company["LinkedIn site favicon"] =  "" if len(website) == 0 else str(website + "/favicon.ico")
-    company["LinkedIn temporary logo"] = logo_url
-    company["LinkedIn headquarter"] = headquarter
+    c = scrapper.get_company_data(url)
+    company["LinkedIn website"] = c.website
+    company["LinkedIn temporary logo"] = c.logo_url
+    company["LinkedIn headquarter"] = c.headquarter
     return company
 
 if __name__ == "__main__":
