@@ -21,7 +21,9 @@ if __name__ == "__main__":
     scrapper = LinkedInEmailScrapper(browser)
 
     try:
+        bookmark = load_bookmark()
         scrapper.go_to_my_connections()
+        scrapper.scroll_to_index(bookmark)
         input("Press Enter to continue...")
     finally:
         browser.quit()
