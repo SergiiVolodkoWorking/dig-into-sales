@@ -28,3 +28,17 @@ class LinkedInEmailScrapper:
             html.send_keys(Keys.END)
             time.sleep(SCROLL_PAUSE_TIME)
             profiles = self.browser.find_elements(By.XPATH, "//li[@class='mn-connection-card artdeco-list ember-view']")
+
+    def open_profile(self, index):
+        self.browser.find_elements(By.XPATH, "//li[@class='mn-connection-card artdeco-list ember-view']")[index].click()
+        OPEN_PROFILE_PAUSE_TIME = 3
+        time.sleep(OPEN_PROFILE_PAUSE_TIME)
+
+    def scrap_contact_info(self):
+        current_url = self.browser.current_url
+        self.browser.get(current_url + "detail/contact-info/")
+        time.sleep(1)
+        print(self.parse_property_from_xpath("//a[contains(@href,'mailto:')]"))
+        self.browser.get(current_url)
+        time.sleep(1)
+        

@@ -24,10 +24,9 @@ if __name__ == "__main__":
         bookmark = load_bookmark()
         scrapper.go_to_my_connections()
         scrapper.scroll_to_index(bookmark)
+        scrapper.open_profile(bookmark)
+        scrapper.scrap_contact_info()
         input("Press Enter to continue...")
     finally:
         browser.quit()
         print('The flow is completed.')
-    
-
-
