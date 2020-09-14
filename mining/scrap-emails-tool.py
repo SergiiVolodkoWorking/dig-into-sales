@@ -2,8 +2,9 @@ import os.path
 import pandas as pd
 from BrowserFactory import BrowserFactory
 from LinkedInEmailScrapper import LinkedInEmailScrapper
+import time
 
-
+BATCH_SIZE = 1
 bookmark_file = "./data/emails_bookmark.txt"
 
 def save_bookmark(i):
@@ -16,6 +17,11 @@ def load_bookmark():
     with open(bookmark_file, "r") as file:
         return int(file.read())
 
+def go_back(browser):
+    time.sleep(3)
+    browser.execute_script("window.history.go(-1)")
+    time.sleep(3)
+
 if __name__ == "__main__":
     browser = BrowserFactory.create()
     scrapper = LinkedInEmailScrapper(browser)
@@ -23,10 +29,18 @@ if __name__ == "__main__":
     try:
         bookmark = load_bookmark()
         scrapper.go_to_my_connections()
-        scrapper.scroll_to_index(bookmark)
-        scrapper.open_profile(bookmark)
-        scrapper.scrap_contact_info()
-        input("Press Enter to continue...")
+        
+        for i in range(bookmark, bookmark + BATCH_SIZE):
+            scrapper.scroll_to_index(i)
+            scrapper.open_profile_by_index(i)
+            profile = scrapper.scrap_contact_info()
+            
+            go_back(browser)
+            print(profile.name, profile.email)
+            
+            # if(not '/comany/' in profile.company_link):
+            #     continue
+        input("Press ENTER to finish.....")
     finally:
         browser.quit()
         print('The flow is completed.')
