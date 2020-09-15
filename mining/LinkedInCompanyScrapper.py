@@ -3,7 +3,7 @@ from selenium.webdriver.common.by import By
 import pandas as pd
 import re
 
-class LinkedInScrapper:
+class LinkedInCompanyScrapper:
     browser = {}
 
     def __init__(self, browser):

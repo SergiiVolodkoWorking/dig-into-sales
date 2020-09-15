@@ -1,7 +1,7 @@
 import os.path
 import pandas as pd
 from BrowserFactory import BrowserFactory
-from LinkedInEmailScrapper import LinkedInEmailScrapper
+from LinkedInProfileScrapper import LinkedInProfileScrapper
 import time
 
 BATCH_SIZE = 1
@@ -24,7 +24,7 @@ def go_back(browser):
 
 if __name__ == "__main__":
     browser = BrowserFactory.create()
-    scrapper = LinkedInEmailScrapper(browser)
+    scrapper = LinkedInProfileScrapper(browser)
 
     try:
         bookmark = load_bookmark()

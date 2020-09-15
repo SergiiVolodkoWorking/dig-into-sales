@@ -1,6 +1,6 @@
 import pandas as pd
 from BrowserFactory import BrowserFactory
-from LinkedInScrapper import LinkedInScrapper
+from LinkedInCompanyScrapper import LinkedInCompanyScrapper
 
 source_data_file = "./data/companies-with-linkedin-data-and-aggregated-findep-industry-and-directors.csv"
 target_data_file = "./data/companies-with-extended-linkedin-data-and-aggregated-findep-industry-and-directors.csv"
@@ -41,7 +41,7 @@ if __name__ == "__main__":
     companies = load_companies()
 
     browser = BrowserFactory.create()
-    scrapper = LinkedInScrapper(browser)
+    scrapper = LinkedInCompanyScrapper(browser)
 
     bulk_size = 50
     bookmark = load_bookmark()

@@ -5,7 +5,7 @@ import pandas as pd
 import time
 from random import uniform
 
-class LinkedInEmailScrapper:
+class LinkedInProfileScrapper:
     browser = {}
 
     def __init__(self, browser):

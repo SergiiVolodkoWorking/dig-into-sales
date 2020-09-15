@@ -1,6 +1,6 @@
 import pandas as pd
 from BrowserFactory import BrowserFactory
-from LinkedInScrapper import LinkedInScrapper
+from LinkedInCompanyScrapper import LinkedInCompanyScrapper
 import os.path
 
 source_data_file = "./data/airtable-unique-companies.csv"
@@ -76,7 +76,7 @@ if __name__ == "__main__":
     companies = load_all_companies()
 
     browser = BrowserFactory.create()
-    scrapper = LinkedInScrapper(browser)
+    scrapper = LinkedInCompanyScrapper(browser)
 
     bookmark = load_bookmark()
     print('Starting from:', bookmark)
