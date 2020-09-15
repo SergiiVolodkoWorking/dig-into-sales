@@ -58,7 +58,22 @@ class LinkedInProfileScrapper:
         website = self.parse_property_from_xpath("//section[@class='pv-contact-info__contact-type ci-websites']/ul")
 
         return ScrappedProfile(linkedin_id, name, position, email, phone, website, location, company_link)
+
+    def scrap_short_profile(self, index):
+        link = self.browser.find_elements(By.XPATH, "//li[@class='mn-connection-card artdeco-list ember-view']/a")[index].get_attribute("href")
+        description = self.browser.find_elements(By.XPATH, "//li[@class='mn-connection-card artdeco-list ember-view']/div/a")[index].text
+        name, occupation = description.split("\nMember’s occupation\n")
+        name = name.replace("Member’s name\n", "")
         
+        return ShortScrappedProfile(link, name, occupation)
+
+
+class ShortScrappedProfile:
+    def __init__(self, link, name, occupation):
+        self.link = link
+        self.name = name
+        self.occupation = occupation
+
 class ScrappedProfile:
     def __init__(self, linkedin_id, name, position, email, phone, website, location, company_link):
         self.linkedin_id = linkedin_id
