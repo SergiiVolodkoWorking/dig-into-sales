@@ -2,6 +2,7 @@ import os.path
 import pandas as pd
 from BrowserFactory import BrowserFactory
 from LinkedInProfileScrapper import LinkedInProfileScrapper
+from LinkedInCompanyScrapper import LinkedInCompanyScrapper
 import time
 
 BATCH_SIZE = 1
@@ -17,30 +18,34 @@ def load_bookmark():
     with open(bookmark_file, "r") as file:
         return int(file.read())
 
-def go_back(browser):
-    time.sleep(3)
-    browser.execute_script("window.history.go(-1)")
-    time.sleep(3)
+# def go_back(browser):
+#     time.sleep(3)
+#     browser.execute_script("window.history.go(-1)")
+#     time.sleep(3)
 
 if __name__ == "__main__":
     browser = BrowserFactory.create()
-    scrapper = LinkedInProfileScrapper(browser)
+    profileScrapper = LinkedInProfileScrapper(browser)
+    companyScrapper = LinkedInCompanyScrapper(browser)
 
     try:
         bookmark = load_bookmark()
-        scrapper.go_to_my_connections()
+        profileScrapper.go_to_my_connections()
         
         for i in range(bookmark, bookmark + BATCH_SIZE):
-            scrapper.scroll_to_index(i)
-            scrapper.open_profile_by_index(i)
-            profile = scrapper.scrap_contact_info()
+            profileScrapper.scroll_to_index(i)
+            profileScrapper.open_profile_by_index(i)
+            profile = profileScrapper.scrap_contact_info()
             
-            go_back(browser)
             print(profile.name, profile.email)
             
-            # if(not '/comany/' in profile.company_link):
-            #     continue
-        input("Press ENTER to finish.....")
+            if('/company/' in profile.company_link or
+               '/school/' in profile.company_link):
+               company_url = profile.company_link + '/about'
+               company = companyScrapper.get_company_data(company_url)
+               print(company.specialties)
+            
+        # input("Press ENTER to finish.....")
     finally:
         browser.quit()
         print('The flow is completed.')

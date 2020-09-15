@@ -20,7 +20,7 @@ class LinkedInProfileScrapper:
         return "" if len(elements) == 0 else elements[0].get_attribute("href")
 
     def go_to_my_connections(self):
-        self.browser.get("https://www.linkedin.com//mynetwork/invite-connect/connections/")
+        self.browser.get("https://www.linkedin.com/mynetwork/invite-connect/connections/")
         # self.browser.find_elements(By.XPATH, "//button[@data-control-name='sort_by']")[0].click()
         # self.browser.find_elements(By.XPATH, "//div[@aria-label='Sort connections by last name']")[0].click()
         # time.sleep(3)
@@ -42,6 +42,7 @@ class LinkedInProfileScrapper:
     def scrap_contact_info(self):
         current_url = self.browser.current_url
 
+        time.sleep(3)
         name = self.parse_property_from_xpath("//li[@class='inline t-24 t-black t-normal break-words']")
         position = self.parse_property_from_xpath("//h2[@class='mt1 t-18 t-black t-normal break-words']")
         location = self.parse_property_from_xpath("//li[@class='t-16 t-black t-normal inline-block']")
@@ -55,9 +56,6 @@ class LinkedInProfileScrapper:
         email = self.parse_property_from_xpath("//a[contains(@href,'mailto:')]")
         phone = self.parse_property_from_xpath("//li/span[@class='t-14 t-black t-normal']")
         website = self.parse_property_from_xpath("//section[@class='pv-contact-info__contact-type ci-websites']/ul")
-
-        self.browser.execute_script("window.history.go(-1)")
-        time.sleep(1)
 
         return ScrappedProfile(linkedin_id, name, position, email, phone, website, location, company_link)
         

@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 import pandas as pd
 import re
+import time
 
 class LinkedInCompanyScrapper:
     browser = {}
@@ -26,6 +27,7 @@ class LinkedInCompanyScrapper:
 
     def get_company_data(self, linked_company_url):
         self.browser.get(linked_company_url)
+        time.sleep(3)
         url = self.browser.current_url
         linkedin_id = 'unavailable' if url.endswith('unavailable/') else url.split('/')[-3]
 
