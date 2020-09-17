@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import pandas as pd
 import time
+import sys
 from random import uniform
 
 class LinkedInProfileScrapper:
@@ -25,11 +26,16 @@ class LinkedInProfileScrapper:
         # self.browser.find_elements(By.XPATH, "//div[@aria-label='Sort connections by last name']")[0].click()
         # time.sleep(3)
 
+    def scrap_contacts_number(self):
+       return self.parse_property_from_xpath("//h1[@class='t-18 t-black t-normal']")
+
     def scroll_to_index(self, index_bookmark):
         profiles = self.browser.find_elements(By.XPATH, "//li[@class='mn-connection-card artdeco-list ember-view']")
         html = self.browser.find_element_by_tag_name('html')
-        SCROLL_PAUSE_TIME = uniform(5.01, 9.3311)
-        while (len(profiles) < index_bookmark):
+        SCROLL_PAUSE_TIME = uniform(4.01, 6.3311)
+        while (len(profiles) <= index_bookmark):
+            html.send_keys(Keys.HOME)
+            time.sleep(SCROLL_PAUSE_TIME - 3.75)
             html.send_keys(Keys.END)
             time.sleep(SCROLL_PAUSE_TIME)
             profiles = self.browser.find_elements(By.XPATH, "//li[@class='mn-connection-card artdeco-list ember-view']")
@@ -64,15 +70,15 @@ class LinkedInProfileScrapper:
         description = self.browser.find_elements(By.XPATH, "//li[@class='mn-connection-card artdeco-list ember-view']/div/a")[index].text
         name, occupation = description.split("\nMember’s occupation\n")
         name = name.replace("Member’s name\n", "")
-        
+
         return ShortScrappedProfile(link, name, occupation)
 
 
 class ShortScrappedProfile:
     def __init__(self, link, name, occupation):
-        self.link = link
         self.name = name
         self.occupation = occupation
+        self.link = link
 
 class ScrappedProfile:
     def __init__(self, linkedin_id, name, position, email, phone, website, location, company_link):
