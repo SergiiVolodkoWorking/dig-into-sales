@@ -7,9 +7,9 @@ import os.path
 import traceback
 from tqdm import tqdm
 
-BATCH_SIZE = 50
-bookmark_file = "./data/my_network_short_bookmark.txt"
-target_data_file = "./data/my_network_short.csv"
+BATCH_SIZE = 1
+bookmark_file = "./data/my_network_links_bookmark.txt"
+target_data_file = "./data/my_network_links.csv"
 
 def save_profile(profile):
     if not os.path.isfile(target_data_file):
@@ -20,8 +20,13 @@ def save_profile(profile):
     df.to_csv(target_data_file, index=True)
 
 if __name__ == "__main__":
-    print("------- Script started -----------")
-    print("Launching...")
+    print("\n\n----------- Script started -----------\n")
+    print(" Welcome to the contacts crawler!\n")
+    print(" The script will scroll through your LinkedIn contacts in Firefox\n")
+    print(" And save the links to {}\n".format(target_data_file))
+    print(" Please make sure you are logged in to LinkedIn in your Firefox\n")
+    print("\n--------------------------------------\n")
+    print("Launching...\n")
     browser = BrowserFactory.create()
     scrapper = LinkedInProfileScrapper(browser)
     bookmarkRepo = BookmarkRepo(bookmark_file)
@@ -46,9 +51,9 @@ if __name__ == "__main__":
             bookmarkRepo.save_bookmark(i)
 
     except Exception as ex:
-        print("------- ERROR ---------")
+        print("----------- ERROR -----------")
         print(ex)
         traceback.print_exc()
     finally:
         browser.quit()
-        print('------- Script finished --------')
+        print("\n----------- Script finished -----------\n")
