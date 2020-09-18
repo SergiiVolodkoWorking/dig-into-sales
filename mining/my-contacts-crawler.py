@@ -8,6 +8,7 @@ import traceback
 from tqdm import tqdm
 
 BATCH_SIZE = 1
+firefox_profile = '/Users/sergii.volodko/Library/Application Support/Firefox/Profiles/01i25ol7.default-release'
 bookmark_file = "./data/my_network_links_bookmark.txt"
 target_data_file = "./data/my_network_links.csv"
 
@@ -27,7 +28,7 @@ if __name__ == "__main__":
     print(" Please make sure you are logged in to LinkedIn in your Firefox\n")
     print("\n--------------------------------------\n")
     print("Launching...\n")
-    browser = BrowserFactory.create()
+    browser = BrowserFactory.create(firefox_profile)
     scrapper = LinkedInProfileScrapper(browser)
     bookmarkRepo = BookmarkRepo(bookmark_file)
 
