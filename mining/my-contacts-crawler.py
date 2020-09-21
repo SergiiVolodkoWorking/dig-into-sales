@@ -8,7 +8,6 @@ import traceback
 from tqdm import tqdm
 
 BATCH_SIZE = 1
-firefox_profile = '/Users/sergii.volodko/Library/Application Support/Firefox/Profiles/01i25ol7.default-release'
 bookmark_file = "./data/my_network_links_bookmark.txt"
 target_data_file = "./data/my_network_links.csv"
 
@@ -28,7 +27,7 @@ if __name__ == "__main__":
     print(" Please make sure you are logged in to LinkedIn in your Firefox\n")
     print("\n--------------------------------------\n")
     print("Launching...\n")
-    browser = BrowserFactory.create(firefox_profile)
+    browser = BrowserFactory.create()
     scrapper = LinkedInProfileScrapper(browser)
     bookmarkRepo = BookmarkRepo(bookmark_file)
 
@@ -37,10 +36,10 @@ if __name__ == "__main__":
         bookmark = bookmarkRepo.load_bookmark()
         scrapper.go_to_my_connections()
         totalConnections = scrapper.scrap_contacts_number()
-        print("Bookmarked progress {} / {}".format(bookmark, totalConnections))
+        print("Bookmarked progress {} / {}\n".format(bookmark, totalConnections))
         time.sleep(5)
 
-        print("Scrolling to {} ...".format(bookmark))
+        print("Scrolling to {} ...\n".format(bookmark))
         print("Note: sometimes automatic scroll can stuck. Please help the script with a manual scroll in that case")
 
         total = int(totalConnections.replace(' Connections', ''))
