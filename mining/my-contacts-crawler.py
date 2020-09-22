@@ -35,14 +35,18 @@ if __name__ == "__main__":
         print("Scrapping your next {} contacts".format(BATCH_SIZE))
         bookmark = bookmarkRepo.load_bookmark()
         scrapper.go_to_my_connections()
-        totalConnections = scrapper.scrap_contacts_number()
-        print("Bookmarked progress {} / {}\n".format(bookmark, totalConnections))
+        # totalConnections = scrapper.scrap_contacts_number()
+        # print("Bookmarked progress {} / {}\n".format(bookmark, totalConnections))
+        
+        total = 1255
+        print("Bookmarked progress {} / {} Connections".format(bookmark, 1255))
         time.sleep(5)
 
         print("Scrolling to {} ...\n".format(bookmark))
         print("Note: sometimes automatic scroll can stuck. Please help the script with a manual scroll in that case")
 
-        total = int(totalConnections.replace(' Connections', ''))
+        # total = int(totalConnections.replace(' Connections', ''))
+
 
         for i in tqdm(range(bookmark, min(bookmark + BATCH_SIZE, total))):
             scrapper.scroll_to_index(i)
