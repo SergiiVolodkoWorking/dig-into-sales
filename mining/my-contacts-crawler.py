@@ -8,8 +8,10 @@ import traceback
 from tqdm import tqdm
 
 BATCH_SIZE = 1
-bookmark_file = "./data/my_network_links_bookmark.txt"
-target_data_file = "./data/my_network_links.csv"
+root_folder = os.path.join(os.path.dirname(__file__), '..')
+data_folder = os.path.join(root_folder, "data")
+bookmark_file = os.path.join(data_folder, "my_network_links_bookmark.txt")
+target_data_file = os.path.join(data_folder, "my_network_links.csv")
 
 def save_profile(profile):
     if not os.path.isfile(target_data_file):
@@ -19,6 +21,10 @@ def save_profile(profile):
     df = df.append(profile.__dict__, ignore_index=True)
     df.to_csv(target_data_file, index=True)
 
+def make_data_folder_if_needed():
+    if not os.path.exists(data_folder):
+        os.makedirs(data_folder)
+
 if __name__ == "__main__":
     print("\n\n----------- Script started -----------\n")
     print(" Welcome to the contacts crawler!\n")
@@ -27,6 +33,7 @@ if __name__ == "__main__":
     print(" Please make sure you are logged in to LinkedIn in your Firefox\n")
     print("\n--------------------------------------\n")
     print("Launching...\n")
+    make_data_folder_if_needed()
     browser = BrowserFactory.create()
     scrapper = LinkedInProfileScrapper(browser)
     bookmarkRepo = BookmarkRepo(bookmark_file)
