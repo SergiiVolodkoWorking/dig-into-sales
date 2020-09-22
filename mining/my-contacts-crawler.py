@@ -32,7 +32,7 @@ if __name__ == "__main__":
     print("\n\n----------- Script started -----------\n")
     print(" Welcome to the contacts crawler!\n")
     print(" The script will scroll through your LinkedIn contacts in Firefox\n")
-    print(" And save the links to actual profiles {}\n")
+    print(" And save the links to the actual profiles\n")
     print(" Please make sure you are logged in to LinkedIn in your Firefox\n")
     print(" Scraping parameters can be configured in 'network_mining_config.json'\n")
     print("\n--------------------------------------\n")
