@@ -8,8 +8,8 @@ import traceback
 from tqdm import tqdm
 
 BATCH_SIZE = 1
-root_folder = os.path.join(os.path.dirname(__file__), '..')
-data_folder = os.path.join(root_folder, "data")
+root_folder = os.path.join(os.path.dirname(__file__))
+data_folder = os.path.join(root_folder, "data", "..")
 bookmark_file = os.path.join(data_folder, "my_network_links_bookmark.txt")
 target_data_file = os.path.join(data_folder, "my_network_links.csv")
 
@@ -24,6 +24,7 @@ def save_profile(profile):
 def make_data_folder_if_needed():
     if not os.path.exists(data_folder):
         os.makedirs(data_folder)
+        os.chmod(data_folder, 0o777)
 
 if __name__ == "__main__":
     print("\n\n----------- Script started -----------\n")

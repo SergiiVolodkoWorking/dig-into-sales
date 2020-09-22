@@ -3,3 +3,4 @@ mining/__pycache__
 
 geckodriver.log
 data
+.DS_Store
