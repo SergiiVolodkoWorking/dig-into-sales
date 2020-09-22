@@ -1,0 +1,5 @@
+{
+    "crawler_batch_size": 50,
+    "crawler_bookmark_file_name": "my_network_links_bookmark.txt",
+    "crawler_result_file_name": "my_network_links.csv"
+}

@@ -6,34 +6,43 @@ import time
 import os.path
 import traceback
 from tqdm import tqdm
+import json
 
-BATCH_SIZE = 1
-root_folder = os.path.join(os.path.dirname(__file__))
-data_folder = os.path.join(root_folder, "data", "..")
-bookmark_file = os.path.join(data_folder, "my_network_links_bookmark.txt")
-target_data_file = os.path.join(data_folder, "my_network_links.csv")
+root_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+DATA_FOLDER = os.path.join(root_folder, "data")
 
-def save_profile(profile):
-    if not os.path.isfile(target_data_file):
+def save_profile(profile, target_file):
+    if not os.path.isfile(target_file):
         df = pd.DataFrame([], columns=profile.__dict__.keys())
-        df.to_csv(target_data_file, index=True)
-    df = pd.read_csv(target_data_file, index_col=0)
+        df.to_csv(target_file, index=True)
+    df = pd.read_csv(target_file, index_col=0)
     df = df.append(profile.__dict__, ignore_index=True)
-    df.to_csv(target_data_file, index=True)
+    df.to_csv(target_file, index=True)
 
 def make_data_folder_if_needed():
-    if not os.path.exists(data_folder):
-        os.makedirs(data_folder)
-        os.chmod(data_folder, 0o777)
+    if not os.path.exists(DATA_FOLDER):
+        os.makedirs(DATA_FOLDER)
+        os.chmod(DATA_FOLDER, 0o777)
+
+def load_config():
+    with open('network_mining_config.json') as f:
+        return json.load(f)
 
 if __name__ == "__main__":
     print("\n\n----------- Script started -----------\n")
     print(" Welcome to the contacts crawler!\n")
     print(" The script will scroll through your LinkedIn contacts in Firefox\n")
-    print(" And save the links to {}\n".format(target_data_file))
+    print(" And save the links to actual profiles {}\n")
     print(" Please make sure you are logged in to LinkedIn in your Firefox\n")
+    print(" Scraping parameters can be configured in 'network_mining_config.json'\n")
     print("\n--------------------------------------\n")
     print("Launching...\n")
+    config = load_config()
+    BATCH_SIZE = config["crawler_batch_size"]
+    bookmark_file = os.path.join(DATA_FOLDER, config["crawler_bookmark_file_name"])
+    target_data_file = os.path.join(DATA_FOLDER, config["crawler_result_file_name"])
+    print("The output file will be: {}\n".format(target_data_file))
+
     make_data_folder_if_needed()
     browser = BrowserFactory.create()
     scrapper = LinkedInProfileScrapper(browser)
@@ -59,7 +68,7 @@ if __name__ == "__main__":
         for i in tqdm(range(bookmark, min(bookmark + BATCH_SIZE, total))):
             scrapper.scroll_to_index(i)
             profile = scrapper.scrap_short_profile(i)
-            save_profile(profile)
+            save_profile(profile, target_data_file)
             bookmarkRepo.save_bookmark(i)
 
     except Exception as ex:
