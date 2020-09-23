@@ -25,7 +25,7 @@ def make_data_folder_if_needed():
         os.chmod(DATA_FOLDER, 0o777)
 
 def load_config():
-    with open('network_mining_config.json') as f:
+    with open(os.path.join(os.path.dirname(__file__), 'network_mining_config.json')) as f:
         return json.load(f)
 
 if __name__ == "__main__":

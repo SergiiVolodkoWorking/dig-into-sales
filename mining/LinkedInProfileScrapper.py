@@ -45,17 +45,20 @@ class LinkedInProfileScrapper:
         OPEN_PROFILE_PAUSE_TIME = 3
         time.sleep(OPEN_PROFILE_PAUSE_TIME)
 
-    def scrap_contact_info(self):
-        current_url = self.browser.current_url
-
+    def scrap_contact_info(self, profile_url):
+        self.browser.get(profile_url)
         time.sleep(3)
+        html = self.browser.find_element_by_tag_name('html')
+        html.send_keys(Keys.END)
+        time.sleep(3)
+
         name = self.parse_property_from_xpath("//li[@class='inline t-24 t-black t-normal break-words']")
         position = self.parse_property_from_xpath("//h2[@class='mt1 t-18 t-black t-normal break-words']")
         location = self.parse_property_from_xpath("//li[@class='t-16 t-black t-normal inline-block']")
         company_link = self.parse_href_from_xpath("//a[@data-control-name='background_details_company']")
         company_link_info = self.parse_property_from_xpath("//a[@data-control-name='background_details_company']")
 
-        self.browser.get(current_url + "detail/contact-info/")
+        self.browser.get(profile_url + "detail/contact-info/")
         time.sleep(1)
 
         linkedin_id = self.parse_property_from_xpath("//a[contains(@href,'https://www.linkedin.com/in')]")
