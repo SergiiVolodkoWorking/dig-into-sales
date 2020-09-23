@@ -61,4 +61,4 @@ From `dig-into-sales/mining` folder execute:
 
 **Result Data**
 
-`dig-into-sales/data` folder will be created by the script and will contain bookmarks and the scrapped data
+`dig-into-sales/data` folder will be created by the scripts and will contain bookmarks and the scrapped data
