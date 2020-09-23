@@ -40,7 +40,7 @@ def merge_scrapped_data(profile, company):
     merged = dict()
     merged.update(profile.__dict__)
     c_dict = company.__dict__
-    for key in c_dict.keys():
+    for key in list(c_dict):
         if "company_" in key: continue
         c_dict["company_" + key] = c_dict.pop(key)
     
