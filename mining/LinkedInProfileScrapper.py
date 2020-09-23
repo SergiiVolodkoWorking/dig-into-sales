@@ -84,10 +84,10 @@ class ShortScrappedProfile:
         self.link = link
 
 class ScrappedProfile:
-    def __init__(self, linkedin_id, name, position, email, phone, website, location, company_link):
+    def __init__(self, linkedin_id, name, occupation, email, phone, website, location, company_link):
         self.linkedin_id = linkedin_id
         self.name = name
-        self.position = position
+        self.occupation = occupation
         self.email = email
         self.phone = phone
         self.website = website

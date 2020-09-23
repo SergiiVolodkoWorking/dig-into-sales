@@ -3,7 +3,7 @@ import pandas as pd
 from BrowserFactory import BrowserFactory
 from BookmarkRepo import BookmarkRepo
 from LinkedInProfileScrapper import LinkedInProfileScrapper
-from LinkedInCompanyScrapper import LinkedInCompanyScrapper
+from LinkedInCompanyScrapper import LinkedInCompanyScrapper, EmptyScrappedCompany
 import time
 import json
 import traceback
@@ -26,6 +26,26 @@ def load_profile_links(config):
     if not os.path.isfile(source_file):
         raise Exception("crawler_result_file_name is not found by path:\n {}".format(source_file))
     return pd.read_csv(source_file, index_col=0)
+
+def save_profile(profile, target_file):
+    if not os.path.isfile(target_file):
+        df = pd.DataFrame([], columns=profile.keys())
+        df.to_csv(target_file, index=True)
+    df = pd.read_csv(target_file, index_col=0)
+    df = df.append(profile, ignore_index=True)
+    df.to_csv(target_file, index=True)
+
+
+def merge_scrapped_data(profile, company):
+    merged = dict()
+    merged.update(profile.__dict__)
+    c_dict = company.__dict__
+    for key in c_dict.keys():
+        if "company_" in key: continue
+        c_dict["company_" + key] = c_dict.pop(key)
+    
+    merged.update(c_dict)
+    return merged
 
 if __name__ == "__main__":
     print("\n\n----------- Script started -----------\n")
@@ -59,12 +79,17 @@ if __name__ == "__main__":
         
         for i in tqdm(range(bookmark, min(bookmark + BATCH_SIZE, total))):
             url = profile_links.iloc[i]["link"]
-            profile = profileScrapper.scrap_contact_info(url)
-            if('/company/' in profile.company_link or
-               '/school/' in profile.company_link):
-               company_url = profile.company_link + 'about'
+            contact = profileScrapper.scrap_contact_info(url)
+
+            company = EmptyScrappedCompany()
+            if('/company/' in contact.company_link or
+               '/school/' in contact.company_link):
+               company_url = contact.company_link + "about"
                company = companyScrapper.get_company_data(company_url)
             
+            profile = merge_scrapped_data(contact, company)
+            save_profile(profile, target_data_file)
+            bookmarkRepo.save_bookmark(i)
 
     except Exception as ex:
         print("----------- ERROR -----------")

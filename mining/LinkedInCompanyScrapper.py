@@ -66,3 +66,7 @@ class ScrappedCompany:
         self.website = website
         self.headquarter = headquarter
         self.logo_url = logo_url
+
+class EmptyScrappedCompany(ScrappedCompany):
+    def __init__(self):
+        super(EmptyScrappedCompany, self).__init__("","","","","","","","","","")
