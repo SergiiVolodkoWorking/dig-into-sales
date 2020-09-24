@@ -6,11 +6,26 @@ Process consist of two stages:
 1. Scroll through my network and store the links (using `my-contacts-crawler.py`)
 2. Iterate through stored links and scrape every contact + their current company data (using `emails-linkedin-scrapper-pipeline.py`)
 
-### Installation - Mac
+Make sure you have Firefox installed. The scripts are scraping data using Firefox to not mess up with your main browser. 
+
+### [Experimental] Automatic Installation - Mac
+
+Clone the project
+In terminal navigate to a folder where you want this project to be stored.
+And execute: 
+
+`git clone https://github.com/SergiiVolodkoWorking/dig-into-sales.git`
+
+In terminal navigate inside the cloned folder (`cd dig-into-sales`)
+
+There execute: `chmod 755 ./setup_mining.sh`
+
+Then execute: `./setup_mining.sh`
+
+### Manual Installation - Mac
+The same process but in manual steps
 
 **1. Environment**
-
-Make sure you have Firefox installed. Scripts are scraping data using Firefox to not mess up with your main browser. 
 
 Make sure you have [Homebrew](https://brew.sh/). To install it execute in your terminal:
 
