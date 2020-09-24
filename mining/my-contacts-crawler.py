@@ -34,20 +34,22 @@ if __name__ == "__main__":
     print(" The script will scroll through your LinkedIn contacts in Firefox\n")
     print(" And save the links to the actual profiles\n")
     print(" Please make sure you are logged in to LinkedIn in your Firefox\n")
-    print(" Scraping parameters can be configured in 'network_mining_config.json'\n")
+    print(" Scraping parameters can be configured from 'network_mining_config.json'\n")
     print("\n--------------------------------------\n")
     print("Launching...\n")
     config = load_config()
     BATCH_SIZE = config["crawler_batch_size"]
     bookmark_file = os.path.join(DATA_FOLDER, config["crawler_bookmark_file_name"])
     target_data_file = os.path.join(DATA_FOLDER, config["crawler_result_file_name"])
-    print("The output file will be: {}\n".format(target_data_file))
+    print("The output will be stored to: {}\n".format(target_data_file))
 
     make_data_folder_if_needed()
     browser = BrowserFactory.create()
     scrapper = LinkedInProfileScrapper(browser)
     bookmarkRepo = BookmarkRepo(bookmark_file)
 
+    total = 0
+    progress = 0
     try:
         print("Scrapping your next {} contacts".format(BATCH_SIZE))
         bookmark = bookmarkRepo.load_bookmark()
@@ -59,7 +61,7 @@ if __name__ == "__main__":
         print("Bookmarked progress {} / {} Connections".format(bookmark, 1255))
         time.sleep(5)
 
-        print("Scrolling to {} ...\n".format(bookmark))
+        print("\nScrolling to {} ...\n".format(bookmark))
         print("Note: sometimes automatic scroll can stuck. Please help the script with a manual scroll in that case")
 
         # total = int(totalConnections.replace(' Connections', ''))
@@ -70,6 +72,7 @@ if __name__ == "__main__":
             profile = scrapper.scrap_short_profile(i)
             save_profile(profile, target_data_file)
             bookmarkRepo.save_bookmark(i)
+            progress = i + 1
 
     except Exception as ex:
         print("----------- ERROR -----------")
@@ -77,4 +80,5 @@ if __name__ == "__main__":
         traceback.print_exc()
     finally:
         browser.quit()
+        print("\nProgress: {} / {}".format(progress, total))
         print("\n----------- Script finished -----------\n")
