@@ -3,18 +3,18 @@
 ## LinkedIn profiles mining
 
 Process consist of two stages:
-1. Scroll through all my contacts and store links (with `my-contacts-crawler.py`)
-2. Iterate through stored links and scrape contact's and their current companies (with `emails-linkedin-scrapper-pipeline.py`)
+1. Scroll through my network and store the links (using `my-contacts-crawler.py`)
+2. Iterate through stored links and scrape every contact + their current company data (using `emails-linkedin-scrapper-pipeline.py`)
 
 ### Installation - Mac
 
 **1. Environment**
 
-Scripts are scraping data via Firefox. To not mess up with your main browser. Make sure you have Firefox installed.
+Make sure you have Firefox installed. Scripts are scraping data using Firefox to not mess up with your main browser. 
 
 Make sure you have [Homebrew](https://brew.sh/). To install it execute in your terminal:
 
- `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"`
+`/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"`
 
 Then execute following commands from your terminal:
 
