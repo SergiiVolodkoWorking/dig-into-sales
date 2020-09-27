@@ -57,15 +57,14 @@ if __name__ == "__main__":
         # totalConnections = scrapper.scrap_contacts_number()
         # print("Bookmarked progress {} / {}\n".format(bookmark, totalConnections))
         
-        total = 1255
-        print("Bookmarked progress {} / {} Connections".format(bookmark, 1255))
+        total = config["crawler_my_contacts_limit"]
+        print("Bookmarked progress {} / {} Connections".format(bookmark, total))
         time.sleep(5)
 
-        print("\nScrolling to {} ...\n".format(bookmark))
+        print("\nScrolling to # {} ...\n".format(bookmark))
         print("Note: sometimes automatic scroll can stuck. Please help the script with a manual scroll in that case")
 
         # total = int(totalConnections.replace(' Connections', ''))
-
 
         for i in tqdm(range(bookmark, min(bookmark + BATCH_SIZE, total))):
             scrapper.scroll_to_index(i)
