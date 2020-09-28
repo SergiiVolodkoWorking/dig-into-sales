@@ -31,7 +31,7 @@ def save_profile(profile, target_file):
     df.to_csv(target_file, index=True)
 
 
-def merge_scrapped_data(profile, company):
+def merge_scrapped_records(profile, company):
     merged = dict()
     merged.update(profile.__dict__)
     c_dict = company.__dict__
@@ -85,7 +85,7 @@ if __name__ == "__main__":
                company_url = contact.company_link + "about"
                company = companyScrapper.get_company_data(company_url)
             
-            profile = merge_scrapped_data(contact, company)
+            profile = merge_scrapped_records(contact, company)
             save_profile(profile, target_data_file)
             bookmarkRepo.save_bookmark(i)
             progress = i + 1
@@ -96,5 +96,5 @@ if __name__ == "__main__":
         traceback.print_exc()
     finally:
         browser.quit()
-        print("\nProgress:  {} / {}".format(progress, total))
+        print("\nSaved progress:  {} / {}".format(progress, total))
         print("\n----------- Script finished -----------\n")

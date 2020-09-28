@@ -79,5 +79,5 @@ if __name__ == "__main__":
         traceback.print_exc()
     finally:
         browser.quit()
-        print("\nProgress: {} / {}".format(progress, total))
+        print("\nSaved progress: {} / {}".format(progress, total))
         print("\n----------- Script finished -----------\n")
