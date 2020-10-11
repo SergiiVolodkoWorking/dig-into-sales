@@ -4,7 +4,7 @@
 
 Process consist of two stages:
 1. Scroll through my network and store the links (using `my-contacts-crawler.py`)
-2. Iterate through stored links and scrape every contact + their current company data (using `emails-linkedin-scrapper-pipeline.py`)
+2. Iterate through stored links and scrape every contact + their current company data (using `emails-linkedin-scraping-pipeline.py`)
 
 ### Crucial preconditions
 The scripts are scraping data using Firefox to not mess up with your main browser.
@@ -51,7 +51,7 @@ From `dig-into-sales/mining` folder execute:
 
 From `dig-into-sales/mining` folder execute:
 
-`python3 emails-linkedin-scrapping-pipeline.py`
+`python3 emails-linkedin-scraping-pipeline.py`
 
 
 **Result Data**
