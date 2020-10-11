@@ -13,7 +13,7 @@ def load_config():
 if __name__ == "__main__":
     print("\n\n----- Scheduler script started -----\n")
     print(" Welcome to the emails scraper scheduler!\n")
-    print(" The script will run emails scraper scirpt multiple times\n")
+    print(" The script will run emails scraper script multiple times\n")
     print(" Scheduling and scraping parameters can be configured from 'network_mining_config.json'\n")
     print("\n--------------------------------------\n")
     print("Beginning the schedule...\n")

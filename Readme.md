@@ -54,6 +54,15 @@ From `dig-into-sales/mining` folder execute:
 `python3 emails-linkedin-scraping-pipeline.py`
 
 
+**Experimental: Scheduler to run emails scraper script multiple times**
+When you're confident running scraping script and want to scrape more in one go.
+
+From `dig-into-sales/mining` folder execute:
+
+`python3 emails-linkedin-scraping-scheduler.py`
+
+Note: like this there is a higher risk of making too many wrong requests to LinkedIn
+
 **Result Data**
 
 `dig-into-sales/data` folder will be created by the scripts and will contain bookmarks and the scrapped data
