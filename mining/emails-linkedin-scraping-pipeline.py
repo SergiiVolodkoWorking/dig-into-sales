@@ -66,15 +66,16 @@ if __name__ == "__main__":
     total = 0
     progress = 0
     try:
-        print("Visiting and scraping your next {} contacts".format(BATCH_SIZE))
+        print("Visiting and scraping your next {} contacts\n".format(BATCH_SIZE))
         bookmark = bookmarkRepo.load_bookmark()
+        print("Note: If your LinkedIn session has expired - open new Firefox window, login to LinkedIn, close Firefox window, restart the script.\n")
 
         profile_links = load_profile_links(config)
 
         total = len(profile_links)
 
         print("Bookmarked progress {} / {}\n".format(bookmark, total))
-        
+
         for i in tqdm(range(bookmark, min(bookmark + BATCH_SIZE, total))):
             url = profile_links.iloc[i]["link"]
             contact = profileScraper.scrape_contact_info(url)
