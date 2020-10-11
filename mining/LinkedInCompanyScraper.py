@@ -4,7 +4,7 @@ import pandas as pd
 import re
 import time
 
-class LinkedInCompanyScrapper:
+class LinkedInCompanyScraper:
     browser = {}
 
     def __init__(self, browser):
@@ -52,9 +52,9 @@ class LinkedInCompanyScrapper:
         logo_url = self.parse_image_src_from_xpath("//img[@class='org-top-card-primary-content__logo Elevation-0dp lazy-image ember-view']")
         company_name = self.parse_property_from_xpath("//h1/span[@dir='ltr']")
 
-        return ScrappedCompany(linkedin_id,company_name, description, size, specialties, established, industry, website, headquarter, logo_url)
+        return ScrapedCompany(linkedin_id,company_name, description, size, specialties, established, industry, website, headquarter, logo_url)
 
-class ScrappedCompany:
+class ScrapedCompany:
     def __init__(self, linkedin_id, company_name, description, size, specialties, established, industry, website, headquarter, logo_url):
         self.linkedin_id = linkedin_id
         self.linkedin_name = company_name
@@ -67,6 +67,6 @@ class ScrappedCompany:
         self.headquarter = headquarter
         self.logo_url = logo_url
 
-class EmptyScrappedCompany(ScrappedCompany):
+class EmptyScrapedCompany(ScrapedCompany):
     def __init__(self):
-        super(EmptyScrappedCompany, self).__init__("","","","","","","","","","")
+        super(EmptyScrapedCompany, self).__init__("","","","","","","","","","")

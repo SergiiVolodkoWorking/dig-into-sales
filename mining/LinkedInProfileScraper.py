@@ -45,7 +45,7 @@ class LinkedInProfileScraper:
         OPEN_PROFILE_PAUSE_TIME = 3
         time.sleep(OPEN_PROFILE_PAUSE_TIME)
 
-    def scrap_contact_info(self, profile_url):
+    def scrape_contact_info(self, profile_url):
         self.browser.get(profile_url)
         time.sleep(3)
         html = self.browser.find_element_by_tag_name('html')
@@ -66,7 +66,7 @@ class LinkedInProfileScraper:
         phone = self.parse_property_from_xpath("//li/span[@class='t-14 t-black t-normal']")
         website = self.parse_property_from_xpath("//section[@class='pv-contact-info__contact-type ci-websites']/ul")
 
-        return ScrappedProfile(linkedin_id, name, position, email, phone, website, location, company_link)
+        return ScrapedProfile(linkedin_id, name, position, email, phone, website, location, company_link)
 
     def scrape_short_profile(self, index):
         link = self.browser.find_elements(By.XPATH, "//li[@class='mn-connection-card artdeco-list ember-view']/a")[index].get_attribute("href")
@@ -83,7 +83,7 @@ class ShortScrapedProfile:
         self.occupation = occupation
         self.link = link
 
-class ScrappedProfile:
+class ScrapedProfile:
     def __init__(self, linkedin_id, name, occupation, email, phone, website, location, company_link):
         self.linkedin_id = linkedin_id
         self.name = name
