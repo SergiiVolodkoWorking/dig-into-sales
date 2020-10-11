@@ -6,7 +6,7 @@ import time
 import sys
 from random import uniform
 
-class LinkedInProfileScrapper:
+class LinkedInProfileScraper:
     browser = {}
 
     def __init__(self, browser):
@@ -26,7 +26,7 @@ class LinkedInProfileScrapper:
         # self.browser.find_elements(By.XPATH, "//div[@aria-label='Sort connections by last name']")[0].click()
         # time.sleep(3)
 
-    def scrap_contacts_number(self):
+    def scrape_contacts_number(self):
        return self.parse_property_from_xpath("//h1[@class='t-18 t-black t-normal']")
 
     def scroll_to_index(self, index_bookmark):
@@ -68,16 +68,16 @@ class LinkedInProfileScrapper:
 
         return ScrappedProfile(linkedin_id, name, position, email, phone, website, location, company_link)
 
-    def scrap_short_profile(self, index):
+    def scrape_short_profile(self, index):
         link = self.browser.find_elements(By.XPATH, "//li[@class='mn-connection-card artdeco-list ember-view']/a")[index].get_attribute("href")
         description = self.browser.find_elements(By.XPATH, "//li[@class='mn-connection-card artdeco-list ember-view']/div/a")[index].text
         name, occupation = description.split("\nMember’s occupation\n")
         name = name.replace("Member’s name\n", "")
 
-        return ShortScrappedProfile(link, name, occupation)
+        return ShortScrapedProfile(link, name, occupation)
 
 
-class ShortScrappedProfile:
+class ShortScrapedProfile:
     def __init__(self, link, name, occupation):
         self.name = name
         self.occupation = occupation

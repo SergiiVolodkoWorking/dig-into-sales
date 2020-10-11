@@ -2,7 +2,7 @@ import os.path
 import pandas as pd
 from BrowserFactory import BrowserFactory
 from BookmarkRepo import BookmarkRepo
-from LinkedInProfileScrapper import LinkedInProfileScrapper
+from LinkedInProfileScraper import LinkedInProfileScraper
 from LinkedInCompanyScrapper import LinkedInCompanyScrapper, EmptyScrappedCompany
 import time
 import json
@@ -59,7 +59,7 @@ if __name__ == "__main__":
     print("The output will be stored to: {}\n".format(target_data_file))
 
     browser = BrowserFactory.create()
-    profileScrapper = LinkedInProfileScrapper(browser)
+    profileScrapper = LinkedInProfileScraper(browser)
     companyScrapper = LinkedInCompanyScrapper(browser)
     bookmarkRepo = BookmarkRepo(bookmark_file)
 

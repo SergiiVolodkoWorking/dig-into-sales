@@ -1,7 +1,7 @@
 import pandas as pd
 from BrowserFactory import BrowserFactory
 from BookmarkRepo import BookmarkRepo
-from LinkedInProfileScrapper import LinkedInProfileScrapper, ShortScrappedProfile
+from LinkedInProfileScraper import LinkedInProfileScraper, ShortScrapedProfile
 import time
 import os.path
 import traceback
@@ -45,7 +45,7 @@ if __name__ == "__main__":
 
     make_data_folder_if_needed()
     browser = BrowserFactory.create()
-    scrapper = LinkedInProfileScrapper(browser)
+    scraper = LinkedInProfileScraper(browser)
     bookmarkRepo = BookmarkRepo(bookmark_file)
 
     total = 0
@@ -53,8 +53,8 @@ if __name__ == "__main__":
     try:
         print("Scrapping your next {} contacts".format(BATCH_SIZE))
         bookmark = bookmarkRepo.load_bookmark()
-        scrapper.go_to_my_connections()
-        # totalConnections = scrapper.scrap_contacts_number()
+        scraper.go_to_my_connections()
+        # totalConnections = scraper.scrape_contacts_number()
         # print("Bookmarked progress {} / {}\n".format(bookmark, totalConnections))
         
         total = config["crawler_my_contacts_limit"]
@@ -62,13 +62,12 @@ if __name__ == "__main__":
         time.sleep(5)
 
         print("\nScrolling to # {} ...\n".format(bookmark))
-        print("Note: sometimes automatic scroll can stuck. Please help the script with a manual scroll in that case")
 
         # total = int(totalConnections.replace(' Connections', ''))
 
         for i in tqdm(range(bookmark, min(bookmark + BATCH_SIZE, total))):
-            scrapper.scroll_to_index(i)
-            profile = scrapper.scrap_short_profile(i)
+            scraper.scroll_to_index(i)
+            profile = scraper.scrape_short_profile(i)
             save_profile(profile, target_data_file)
             bookmarkRepo.save_bookmark(i)
             progress = i + 1

@@ -1,5 +1,5 @@
 {
-    "crawler_batch_size": 50,
+    "crawler_batch_size": 1,
     "crawler_my_contacts_limit": 500,
     "crawler_bookmark_file_name": "my_network_links_bookmark.txt",
     "crawler_result_file_name": "my_network_links.csv",
