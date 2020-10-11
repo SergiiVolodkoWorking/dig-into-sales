@@ -8,6 +8,7 @@ import time
 import json
 import traceback
 from tqdm import tqdm
+import sys
 
 root_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 DATA_FOLDER = os.path.join(root_folder, "data")
@@ -65,6 +66,7 @@ if __name__ == "__main__":
 
     total = 0
     progress = 0
+    return_code = os.EX_OK
     try:
         print("Visiting and scraping your next {} contacts\n".format(BATCH_SIZE))
         bookmark = bookmarkRepo.load_bookmark()
@@ -92,6 +94,7 @@ if __name__ == "__main__":
             progress = i + 1
 
     except Exception as ex:
+        return_code = os.EX_DATAERR
         print("----------- ERROR -----------")
         print(ex)
         traceback.print_exc()
@@ -99,3 +102,4 @@ if __name__ == "__main__":
         browser.quit()
         print("\nSaved progress:  {} / {}".format(progress, total))
         print("\n----------- Script finished -----------\n")
+        sys.exit(return_code)

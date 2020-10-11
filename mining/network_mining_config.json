@@ -5,5 +5,7 @@
     "crawler_result_file_name": "my_network_links.csv",
     "scraper_batch_size": 2,
     "scraper_bookmark_file_name": "profiles_bookmark.txt",
-    "scraper_result_file_name": "profiles.csv"
+    "scraper_result_file_name": "profiles.csv",
+    "scheduler_number_of_scraper_runs": 2,
+    "scheduler_seconds_between_scraper_runs": 120
 }
