@@ -9,6 +9,7 @@ import json
 import traceback
 from tqdm import tqdm
 import sys
+from Generalizer import Generalizer
 
 root_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 DATA_FOLDER = os.path.join(root_folder, "data")
@@ -39,9 +40,12 @@ def merge_scraped_records(profile, company):
     for key in list(c_dict):
         if "company_" in key: continue
         c_dict["company_" + key] = c_dict.pop(key)
-    
     merged.update(c_dict)
     return merged
+
+def generalize_company_columns(company):
+    company.headquarter = Generalizer.generalize_headquarter(company.headquarter)
+    return company
 
 if __name__ == "__main__":
     print("\n\n----------- Script started -----------\n")
@@ -87,6 +91,7 @@ if __name__ == "__main__":
                '/school/' in contact.company_link):
                company_url = contact.company_link + "about"
                company = companyScraper.get_company_data(company_url)
+               company = generalize_company_columns(company)
             
             profile = merge_scraped_records(contact, company)
             save_profile(profile, target_data_file)
