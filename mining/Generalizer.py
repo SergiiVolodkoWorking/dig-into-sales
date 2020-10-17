@@ -151,5 +151,42 @@ class Generalizer():
         for mapping in mappings:
             if any(word in linkedin_hq.lower() for word in mapping['words']):
                 return mapping['hq']
-
         return linkedin_hq
+
+    @staticmethod
+    def generalize_occupation(linkedin_occupation):
+        mappings = [
+            {
+                'words': ['ceo ','coo ', 'cto ', 'cfo ', 'chief', 'executive'],
+                'role': 'C-executive'
+            },
+            {
+                'words': ['founder'],
+                'role': 'Founder/Co-Founder'
+            },
+            {
+                'words': ['director'],
+                'role': 'Director'
+            },
+            {
+                'words': ['adviser'],
+                'role': 'Non-executive'
+            },
+            {
+                'words': ['vice president', 'vp ', 'vp,'],
+                'role': 'VP'
+            },
+            {
+                'words': ['head of', 'head at', 'lead ', 'lead,', 'manager'],
+                'role': 'Top-level-influencer'
+            },
+            {
+                'words': ['consultant', 'designer', ' engineer', 'engineer ', ' developer'],
+                'role': 'Mid-level-influencer'
+            },
+        ]
+
+        for mapping in mappings:
+            if any(word in linkedin_occupation.lower() for word in mapping['words']):
+                return mapping['role']
+        return ''
