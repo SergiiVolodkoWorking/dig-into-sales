@@ -84,15 +84,18 @@ if __name__ == "__main__":
 
         for i in tqdm(range(bookmark, min(bookmark + BATCH_SIZE, total))):
             link_occupation = profile_links.iloc[i]["occupation"]
+            link_name = profile_links.iloc[i]["name"]
             if ('8th light' in link_occupation.lower()):
-                print("Skipping 8th-Lighter ", profile_links.iloc[i]["name"])
+                print("Skipping 8th-Lighter ", link_name)
+                bookmarkRepo.save_bookmark(i)
                 progress = i + 1
                 continue
 
             url = profile_links.iloc[i]["link"]
             contact = profileScraper.scrape_contact_info(url)
             if('/8th-light' in contact.company_link):
-                print("Skipping 8th-Lighter ", profile_links.iloc[i]["name"])
+                print("Skipping 8th-Lighter ", link_name)
+                bookmarkRepo.save_bookmark(i)
                 progress = i + 1
                 continue
 
@@ -102,8 +105,10 @@ if __name__ == "__main__":
                company_url = contact.company_link + "about"
                company = companyScraper.get_company_data(company_url)
                company = generalize_company_columns(company)
-            
+
             profile = merge_scraped_records(contact, company)
+            profile['probable_role'] = Generalizer.generalize_occupation(contact.occupation)
+            
             save_profile(profile, target_data_file)
             bookmarkRepo.save_bookmark(i)
             progress = i + 1
