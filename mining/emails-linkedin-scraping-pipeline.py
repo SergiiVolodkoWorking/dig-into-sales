@@ -83,8 +83,18 @@ if __name__ == "__main__":
         print("Bookmarked progress {} / {}\n".format(bookmark, total))
 
         for i in tqdm(range(bookmark, min(bookmark + BATCH_SIZE, total))):
+            link_occupation = profile_links.iloc[i]["occupation"]
+            if ('8th light' in link_occupation.lower()):
+                print("Skipping 8th-Lighter ", profile_links.iloc[i]["name"])
+                progress = i + 1
+                continue
+
             url = profile_links.iloc[i]["link"]
             contact = profileScraper.scrape_contact_info(url)
+            if('/8th-light' in contact.company_link):
+                print("Skipping 8th-Lighter ", profile_links.iloc[i]["name"])
+                progress = i + 1
+                continue
 
             company = EmptyScrapedCompany()
             if('/company/' in contact.company_link or
