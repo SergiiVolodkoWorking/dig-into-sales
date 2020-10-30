@@ -71,6 +71,7 @@ if __name__ == "__main__":
     total = 0
     progress = 0
     return_code = os.EX_OK
+    companies_cache = dict()
     try:
         print("Visiting and scraping your next {} contacts\n".format(BATCH_SIZE))
         bookmark = bookmarkRepo.load_bookmark()
@@ -102,10 +103,13 @@ if __name__ == "__main__":
             company = EmptyScrapedCompany()
             if('/company/' in contact.company_link or
                '/school/' in contact.company_link):
-               company_url = contact.company_link + "about"
-               company = companyScraper.get_company_data(company_url)
-               company = generalize_company_columns(company)
-
+                company_url = contact.company_link + "about"
+                if (company_url in companies_cache.keys()):
+                    company = companies_cache.get(company_url)
+                else:
+                    company = companyScraper.get_company_data(company_url)
+                    company = generalize_company_columns(company)
+                    companies_cache[company_url] = company
             profile = merge_scraped_records(contact, company)
             profile['probable_role'] = Generalizer.generalize_occupation(contact.occupation)
             
